@@ -1,29 +1,53 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Loader from 'react-native-loading-spinner-overlay';
+import {API, LOGIN, REGISTER} from '../api/api';
 import AppButton from '../components/AppButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogInScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@ssipmt.com');
+  const [password, setPassword] = useState('123456');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogIn = () => {
-    setIsLoading(true);
+  const handleLogIn = async () => {
+    if (email === '' || password === '') {
+      Alert.alert('Please fill both the information correctly.');
+      return;
+    }
 
-    console.log('LOGGED IN Yeahhhhhhhhhh');
+    try {
+      setIsLoading(true);
 
-    setTimeout(() => {
+      const config = {
+        headers: {
+        
+          'Content-Type': 'application/json'
+        },
+      };
+
+      const {data} = await axios.post(LOGIN, {email, password}, config);
+      
+      console.log("TOKEN - ", data.token);
+      await AsyncStorage.setItem('token', data.token);
+
+      navigation.replace('drawer');
+    
       setIsLoading(false);
-      navigation.replace("drawer");
-    }, 3000);
+    
+    } catch (err) {
+      setIsLoading(false);
+      console.log('Error', err.error);
+      // Alert.alert('Something went wrong please try again later');
+    }
   };
 
   return (

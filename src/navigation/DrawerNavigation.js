@@ -1,13 +1,31 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeScreen from '../screens/HomeScreen';
+import OtherStackNavigation from './OtherStackNavigation';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigation = () => (
-  <Drawer.Navigator initialRouteName='Home'>
-      <Drawer.Screen component={HomeScreen} name='Home' />
+const DrawerNavigation = ({navigation}) => (
+  <Drawer.Navigator initialRouteName='Placement' drawerContent={(props) => {
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem label="Logout" onPress={async () => {
+          try{
+            await AsyncStorage.removeItem('token');
+            navigation.replace('stack');
+          }catch(err){
+            console.log("Error - ", err);
+          }
+        }}/>
+      </DrawerContentScrollView>
+    );
+  }}>
+    
+    <Drawer.Screen component={OtherStackNavigation} name='Placement' />
+
   </Drawer.Navigator>
 )
 
