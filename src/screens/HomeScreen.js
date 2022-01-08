@@ -1,22 +1,21 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import {View, Text, Button, Alert, StyleSheet, FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Button, Alert, StyleSheet, FlatList, Linking} from 'react-native';
 import Card from '../components/Card';
 import Loader from 'react-native-loading-spinner-overlay';
-import { PLACEMENT } from '../api/api';
+import {PLACEMENT} from '../api/api';
 
 const HomeScreen = ({navigation}) => {
   const [cardData, setCardData] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCardData = async () => {
-    try{
-      //TODO Card Data fetch
+    try {
       setIsLoading(true);
-      
+
       const config = {
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
         },
       };
@@ -24,17 +23,17 @@ const HomeScreen = ({navigation}) => {
       const {data} = await axios.post(PLACEMENT, {}, config);
       setCardData(data.placement);
 
-      
       setIsLoading(false);
-    }catch(err){
-      console.log("Error - ", err);
+    } catch (err) {
+      console.log('Error - ', err);
       // Alert.alert("Something went wrong");
     }
-  }
+  };
 
   useEffect(() => {
     fetchCardData();
-  }, [])
+  }, []);
+
 
   return (
     <View>
@@ -45,7 +44,7 @@ const HomeScreen = ({navigation}) => {
         color="#fff"
         animation="fade"
       />
-
+  
       <FlatList 
         data={cardData}
         keyExtractor={(id) => id._id}
@@ -66,6 +65,14 @@ const HomeScreen = ({navigation}) => {
         }}
       />
 
+      {/* <Card
+        heading={"Adobe"}
+        eligibility={"Greater than 60%"}
+        salaryPackage={"4LPA"}
+        lastDate={"13/12/21"}
+        postedDate={"10/12/21"}
+        onPress={() => checkUrl("https://www.google.com/")}
+      /> */}
     </View>
   );
 };
@@ -74,7 +81,7 @@ const styles = StyleSheet.create({
   loaderTextStyle: {
     color: 'white',
     marginBottom: 45,
-  }
+  },
 });
 
 export default HomeScreen;

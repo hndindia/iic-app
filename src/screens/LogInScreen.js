@@ -14,9 +14,9 @@ import AppButton from '../components/AppButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogInScreen = ({navigation}) => {
-  const [email, setEmail] = useState('test@ssipmt.com');
-  const [password, setPassword] = useState('123456');
-  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogIn = async () => {
     if (email === '' || password === '') {
@@ -29,7 +29,6 @@ const LogInScreen = ({navigation}) => {
 
       const config = {
         headers: {
-        
           'Content-Type': 'application/json'
         },
       };
@@ -48,6 +47,7 @@ const LogInScreen = ({navigation}) => {
       console.log('Error', err.error);
       // Alert.alert('Something went wrong please try again later');
     }
+    
   };
 
   return (
