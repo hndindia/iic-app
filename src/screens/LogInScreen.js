@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {
   View,
@@ -7,16 +7,31 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Image,
+  Linking,
 } from 'react-native';
 import Loader from 'react-native-loading-spinner-overlay';
 import {API, LOGIN, REGISTER} from '../api/api';
 import AppButton from '../components/AppButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ssipmt_logo from '../assets/images/ssipmt_logo.png';
+import {Input, Icon, Button} from 'react-native-elements';
 
 const LogInScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-   const [isLoading, setIsLoading] = useState(false);
+  //test@ssipmt.com
+  //123456
+  const [email, setEmail] = useState('test@ssipmt.com');
+  const [password, setPassword] = useState('123456');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    //NOTE -> this return will run when this component is unmounted. This is just to avoid the 'React memory leak warning'
+    return () => {
+      setEmail('');
+      setPassword('');
+      setIsLoading(false);
+    };
+  }, []);
 
   const handleLogIn = async () => {
     if (email === '' || password === '') {
@@ -29,25 +44,34 @@ const LogInScreen = ({navigation}) => {
 
       const config = {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
       };
 
       const {data} = await axios.post(LOGIN, {email, password}, config);
-      
-      console.log("TOKEN - ", data.token);
+
+      console.log('TOKEN - ', data.token);
       await AsyncStorage.setItem('token', data.token);
 
       navigation.replace('drawer');
-    
+
       setIsLoading(false);
-    
     } catch (err) {
       setIsLoading(false);
       console.log('Error', err.error);
       // Alert.alert('Something went wrong please try again later');
     }
-    
+  };
+
+  const checkUrl = async url => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+
+      if (supported) await Linking.openURL(url);
+      else Alert.alert(`Don't know how to open this URL: ${url}`);
+    } catch (err) {
+      console.log('Error - ', err);
+    }
   };
 
   return (
@@ -60,34 +84,80 @@ const LogInScreen = ({navigation}) => {
         animation="fade"
       />
 
-      <TextInput
-        style={styles.textInput}
+      <Image style={styles.logo} source={ssipmt_logo} />
+
+      <Text style={styles.heading}>Sign In</Text>
+
+      <Input
         placeholder="Email"
-        keyboardType="email-address"
         value={email}
-        onChangeText={inputText => setEmail(inputText)}
+        onChangeText={value => setEmail(value)}
+        rightIcon={
+          <Icon
+            name="mail"
+            type="foundation"
+            color="#0D054B"
+            size={27}
+            marginRight={10}
+          />
+        }
+        inputContainerStyle={styles.textInput}
       />
 
-      <TextInput
-        style={styles.textInput}
+      <Input
         placeholder="Password"
         secureTextEntry
         value={password}
-        onChangeText={inputText => setPassword(inputText)}
+        onChangeText={value => setPassword(value)}
+        rightIcon={
+          <Icon
+            name="eye-off"
+            type="material-community"
+            color="#0D054B"
+            size={27}
+            marginRight={8}
+          />
+        }
+        inputContainerStyle={styles.textInput}
       />
 
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <Text style={styles.forgetPassStyle}>Forget Your Password?</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-      <AppButton
-        title="Log In"
-        onPress={() => handleLogIn()}
-        style={{
-          marginHorizontal: 55,
-          // backgroundColor:'#1A5276',
+      <Button
+        title="Sign In"
+        buttonStyle={{
+          backgroundColor: '#5B37B7',
+          borderRadius: 7,
         }}
+        titleStyle={{fontWeight: 'bold'}}
+        containerStyle={{
+          marginHorizontal: 20,
+        }}
+        onPress={() => handleLogIn()}
       />
+
+      <View style={styles.textStyleContainer}>
+        <View style={styles.textStyle}>
+
+          <Text style={{textAlign: 'center'}}>
+            By signing in you agree to our
+          </Text>
+
+          <TouchableOpacity
+            style={{flexDirection: 'row'}}
+            onPress={() => checkUrl('https://www.google.com/')}
+          >
+            <Text style={styles.link}>Terms & conditions </Text>
+
+            <Text>and </Text>
+
+            <Text style={styles.link}>Privacy policy</Text>
+          </TouchableOpacity>
+        
+        </View>
+      </View>
     </View>
   );
 };
@@ -96,22 +166,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#ffffff',
     padding: 16,
   },
+  logo: {
+    width: 227,
+    height: 200,
+    alignSelf: 'center',
+    marginVertical: 30,
+  },
+  heading: {
+    marginBottom: 30,
+    fontWeight: 'bold',
+    color: '#0D054B',
+    fontSize: 23,
+    marginLeft: 8,
+  },
+
   textInput: {
-    marginTop: 24,
-    padding: 10,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    elevation: 6,
-    borderRadius: 12,
+    borderColor: '#5B37B7',
+    borderWidth: 2,
+    borderRadius: 10,
+    borderBottomWidth: 2,
   },
 
   forgetPassStyle: {
@@ -123,6 +199,18 @@ const styles = StyleSheet.create({
   loaderTextStyle: {
     color: 'white',
     marginBottom: 45,
+  },
+
+  textStyleContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom:7
+  },
+  textStyle: {
+    alignSelf: 'center',
+  },
+  link: {
+    textDecorationLine: 'underline',
   },
 });
 

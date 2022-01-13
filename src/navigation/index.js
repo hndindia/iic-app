@@ -14,7 +14,8 @@ const RootNavigator = () => (
       initialRouteName="stack"
       screenOptions={{
         header: () => null,
-      }}>
+      }}
+    >
 
       <AllAppNavigation.Screen name="stack" children={StackNavigation} />
 

@@ -1,12 +1,20 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, Alert, StyleSheet, FlatList, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  Button,
+  Alert,
+  StyleSheet,
+  FlatList,
+  Linking,
+} from 'react-native';
 import Card from '../components/Card';
 import Loader from 'react-native-loading-spinner-overlay';
 import {PLACEMENT} from '../api/api';
 
 const HomeScreen = ({navigation}) => {
-  const [cardData, setCardData] = useState();
+  const [cardData, setCardData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCardData = async () => {
@@ -26,14 +34,13 @@ const HomeScreen = ({navigation}) => {
       setIsLoading(false);
     } catch (err) {
       console.log('Error - ', err);
-      // Alert.alert("Something went wrong");
+      Alert.alert("Something went wrong please try again.");
     }
   };
 
   useEffect(() => {
     fetchCardData();
   }, []);
-
 
   return (
     <View>
@@ -44,21 +51,21 @@ const HomeScreen = ({navigation}) => {
         color="#fff"
         animation="fade"
       />
-  
-      <FlatList 
+
+      <FlatList
         data={cardData}
-        keyExtractor={(id) => id._id}
-        renderItem= { ({item}) => {
-          let ld = new Date(item.lastDate)
-          let cd = new Date(item.createdAt)
-	        
+        keyExtractor={id => id._id}
+        renderItem={({item}) => {
+          let ld = new Date(item.lastDate);
+          let cd = new Date(item.createdAt);
+
           return (
             <Card
               heading={item.company}
               eligibility={item.eligibility}
               salaryPackage={item.package}
               lastDate={ld.toDateString()}
-              postedDate={`${cd.getDate()}/${cd.getMonth()+1}`}
+              postedDate={`${cd.getDate()}/${cd.getMonth() + 1}`}
               onPress={() => navigation.navigate('For More', {item})}
             />
           );

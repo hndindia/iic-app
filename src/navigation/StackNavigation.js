@@ -19,7 +19,7 @@ const StackNavigation = () => (
     <StackNavigator.Screen
       component={LogInScreen}
       name="LogIn"
-      options={{title: 'Log In'}}
+      options={{headerShown: false}}
     />
   
   </StackNavigator.Navigator>
