@@ -20,8 +20,8 @@ import {Input, Icon, Button} from 'react-native-elements';
 const LogInScreen = ({navigation}) => {
   //test@ssipmt.com
   //123456
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('test@ssipmt.com');
+  const [password, setPassword] = useState('123456');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

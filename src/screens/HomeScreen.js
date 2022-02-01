@@ -91,7 +91,9 @@ const HomeScreen = ({navigation}) => {
               }}
               source={require('../assets/images/notice.png')}
             />
-            <Card.Title style={{marginTop: 20}}>Other{'\n'} Opportunities</Card.Title>
+            <Card.Title style={{marginTop: 20}}>
+              Other{'\n'} Opportunities
+            </Card.Title>
           </TouchableOpacity>
         </Card>
         <Card
@@ -102,7 +104,6 @@ const HomeScreen = ({navigation}) => {
             borderRadius: 17,
           }}>
           <TouchableOpacity style={{alignItems: 'center'}}>
-
             <Card.Title style={{margin: 18, fontSize: 18}}>Profile</Card.Title>
 
             <Text style={{textAlign: 'center'}}>75%</Text>
@@ -130,7 +131,7 @@ const HomeScreen = ({navigation}) => {
               }}
               source={require('../assets/images/notice.png')}
             />
-            <Card.Title style={{marginTop:20}}>Events</Card.Title>
+            <Card.Title style={{marginTop: 20}}>Events</Card.Title>
           </TouchableOpacity>
         </Card>
       </View>
@@ -139,7 +140,9 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
         <Heading heading="Welcome Back!" subHeading="JOHN DOE" />
 
         <View style={styles.cardContainer}>
