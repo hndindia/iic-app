@@ -10,7 +10,7 @@ const LoadingScreen = ({navigation}) => {
       const token = await AsyncStorage.getItem('token');
       
       if(token){
-        navigation.replace('drawer');
+        navigation.replace('BottomTab');
       }
       else {
         navigation.replace('LogIn');

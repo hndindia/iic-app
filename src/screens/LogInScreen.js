@@ -20,8 +20,8 @@ import {Input, Icon, Button} from 'react-native-elements';
 const LogInScreen = ({navigation}) => {
   //test@ssipmt.com
   //123456
-  const [email, setEmail] = useState('test@ssipmt.com');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const LogInScreen = ({navigation}) => {
       console.log('TOKEN - ', data.token);
       await AsyncStorage.setItem('token', data.token);
 
-      navigation.replace('drawer');
+      navigation.replace('BottomTab');
 
       setIsLoading(false);
     } catch (err) {

@@ -1,6 +1,12 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
+  Image,
+  ProgressBarAndroid,
+  ProgressBarAndroidBase,
+  ScrollView,
+} from 'react-native';
+import {
   View,
   Text,
   Button,
@@ -8,87 +14,164 @@ import {
   StyleSheet,
   FlatList,
   Linking,
+  TouchableOpacity,
 } from 'react-native';
-import Card from '../components/Card';
-import Loader from 'react-native-loading-spinner-overlay';
-import {PLACEMENT} from '../api/api';
+import {Card} from 'react-native-elements';
+import Heading from '../components/Heading';
 
 const HomeScreen = ({navigation}) => {
-  const [cardData, setCardData] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const leftContents = () => {
+    return (
+      <View style={styles.cardLeft}>
+        <Card
+          containerStyle={{
+            borderRadius: 20,
+            shadowColor: '#000',
+            elevation: 11,
+            borderRadius: 17,
+          }}>
+          <TouchableOpacity style={{alignItems: 'center'}}>
+            <Card.Image
+              style={{
+                height: 60,
+                width: 60,
+                marginTop: 20,
+              }}
+              source={require('../assets/images/notice.png')}
+            />
+            <Card.Title style={{marginTop: 25}}>NOTICES</Card.Title>
+            <Text style={{textAlign: 'center'}}>Recents Updates</Text>
+          </TouchableOpacity>
+        </Card>
 
-  const fetchCardData = async () => {
-    try {
-      setIsLoading(true);
-
-      const config = {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      };
-
-      const {data} = await axios.post(PLACEMENT, {}, config);
-      setCardData(data.placement);
-
-      setIsLoading(false);
-    } catch (err) {
-      console.log('Error - ', err);
-      Alert.alert("Something went wrong please try again.");
-    }
+        <Card
+          containerStyle={{
+            borderRadius: 20,
+            shadowColor: '#000',
+            elevation: 11,
+            borderRadius: 17,
+          }}>
+          <TouchableOpacity style={{alignItems: 'center'}}>
+            <Card.Image
+              style={{
+                height: 50,
+                width: 50,
+              }}
+              source={require('../assets/images/quizzes_icon.png')}
+            />
+            <Card.Title style={{}}>Quizzes</Card.Title>
+            <View style={{alignItems: 'flex-start'}}>
+              <Text>MCA</Text>
+              <Text>NP</Text>
+              <Text>PPC</Text>
+              <Text>CC</Text>
+              <Text>CNS</Text>
+            </View>
+          </TouchableOpacity>
+        </Card>
+      </View>
+    );
   };
 
-  useEffect(() => {
-    fetchCardData();
-  }, []);
+  const rightContents = () => {
+    return (
+      <View style={styles.cardRight}>
+        <Card
+          containerStyle={{
+            borderRadius: 20,
+            shadowColor: '#000',
+            elevation: 11,
+            borderRadius: 17,
+          }}>
+          <TouchableOpacity style={{alignItems: 'center'}}>
+            <Card.Image
+              style={{
+                height: 50,
+                width: 50,
+              }}
+              source={require('../assets/images/notice.png')}
+            />
+            <Card.Title style={{marginTop: 20}}>Other{'\n'} Opportunities</Card.Title>
+          </TouchableOpacity>
+        </Card>
+        <Card
+          containerStyle={{
+            borderRadius: 20,
+            shadowColor: '#000',
+            elevation: 11,
+            borderRadius: 17,
+          }}>
+          <TouchableOpacity style={{alignItems: 'center'}}>
+
+            <Card.Title style={{margin: 18, fontSize: 18}}>Profile</Card.Title>
+
+            <Text style={{textAlign: 'center'}}>75%</Text>
+
+            <ProgressBarAndroid
+              styleAttr="Horizontal"
+              indeterminate={false}
+              progress={0.7}
+              style={{marginBottom: 20}}
+            />
+          </TouchableOpacity>
+        </Card>
+        <Card
+          containerStyle={{
+            borderRadius: 20,
+            shadowColor: '#000',
+            elevation: 11,
+            borderRadius: 17,
+          }}>
+          <TouchableOpacity style={{alignItems: 'center'}}>
+            <Card.Image
+              style={{
+                height: 50,
+                width: 50,
+              }}
+              source={require('../assets/images/notice.png')}
+            />
+            <Card.Title style={{marginTop:20}}>Events</Card.Title>
+          </TouchableOpacity>
+        </Card>
+      </View>
+    );
+  };
 
   return (
-    <View>
-      <Loader
-        visible={isLoading}
-        textContent="Please wait"
-        textStyle={styles.loaderTextStyle}
-        color="#fff"
-        animation="fade"
-      />
+    <View style={styles.container}>
+      <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+        <Heading heading="Welcome Back!" subHeading="JOHN DOE" />
 
-      <FlatList
-        data={cardData}
-        keyExtractor={id => id._id}
-        renderItem={({item}) => {
-          let ld = new Date(item.lastDate);
-          let cd = new Date(item.createdAt);
+        <View style={styles.cardContainer}>
+          {leftContents()}
 
-          return (
-            <Card
-              heading={item.company}
-              eligibility={item.eligibility}
-              salaryPackage={item.package}
-              lastDate={ld.toDateString()}
-              postedDate={`${cd.getDate()}/${cd.getMonth() + 1}`}
-              onPress={() => navigation.navigate('For More', {item})}
-            />
-          );
-        }}
-      />
-
-      {/* <Card
-        heading={"Adobe"}
-        eligibility={"Greater than 60%"}
-        salaryPackage={"4LPA"}
-        lastDate={"13/12/21"}
-        postedDate={"10/12/21"}
-        onPress={() => checkUrl("https://www.google.com/")}
-      /> */}
+          {rightContents()}
+        </View>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+  },
   loaderTextStyle: {
     color: 'white',
     marginBottom: 45,
   },
+  cardContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: 0,
+    padding: 10,
+  },
+  cardLeft: {
+    marginBottom: 30,
+  },
+  cardRight: {},
 });
 
 export default HomeScreen;

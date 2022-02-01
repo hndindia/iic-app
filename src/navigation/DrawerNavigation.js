@@ -3,7 +3,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemL
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import HomeScreen from '../screens/HomeScreen';
-import OtherStackNavigation from './OtherStackNavigation';
+import OtherStackNavigation from './HomeStackNavigation';
 
 const Drawer = createDrawerNavigator();
 
@@ -15,7 +15,7 @@ const DrawerNavigation = ({navigation}) => (
         <DrawerItem label="Logout" onPress={async () => {
           try{
             await AsyncStorage.removeItem('token');
-            navigation.replace('stack');
+            navigation.replace('AuthStack');
           }catch(err){
             console.log("Error - ", err);
           }

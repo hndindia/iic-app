@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const ForMore = ({route, navigation}) => {
   const {item} = route.params;
-
+  // console.log("🔥🔥🔥🔥🔥🔥ROUTE -> ", route);
   const checkUrl = async url => {
     try {
       const supported = await Linking.canOpenURL(url);
@@ -21,6 +21,7 @@ const ForMore = ({route, navigation}) => {
 
   return (
     <View style={styles.container}>
+
       <Text style={styles.companyName}>{item.company}</Text>
 
       <Text>{item.position}</Text>
