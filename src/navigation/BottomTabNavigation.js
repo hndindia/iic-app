@@ -33,6 +33,7 @@ const BottomTabNavigation = ({navigation}) => {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) =>
           tabBarIcons(focused, color, size, route),
+
         tabBarActiveTintColor: '#5B37B7',
         tabBarInactiveTintColor: 'gray',
         headerTitle: '',
@@ -60,7 +61,10 @@ const BottomTabNavigation = ({navigation}) => {
             />
           </TouchableOpacity>
         ),
-      })}>
+      })}
+      
+      >
+
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Placements" component={Placements} />
       <Tab.Screen name="Alumni" component={Alumni} />

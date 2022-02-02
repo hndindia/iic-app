@@ -13,10 +13,10 @@ import Card from '../components/Card';
 import Loader from 'react-native-loading-spinner-overlay';
 import {PLACEMENT} from '../api/api';
 import Heading from '../components/Heading';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Placements = ({navigation}) => {
-  const [cardData, setCardData] = useState({});
+  const [cardData, setCardData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchCardData = async () => {
@@ -31,6 +31,7 @@ const Placements = ({navigation}) => {
       };
 
       const {data} = await axios.post(PLACEMENT, {}, config);
+      console.log('DATA OF CARD - ', typeof data);
       setCardData(data.placement);
 
       setIsLoading(false);
@@ -40,12 +41,16 @@ const Placements = ({navigation}) => {
     }
   };
 
+  const header = () => {
+    return <Heading heading={'PLACEMENT\nOPPORTUNITIES'} />;
+  };
+
   useEffect(() => {
     fetchCardData();
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Loader
         visible={isLoading}
         textContent="Please wait"
@@ -54,18 +59,14 @@ const Placements = ({navigation}) => {
         animation="fade"
       />
 
-      {/* <Heading
-        heading="OTHER OPPORTUNITIES"
-      /> */}
-
       <FlatList
+        ListHeaderComponent={header}
         data={cardData}
         keyExtractor={id => id._id}
         renderItem={({item}) => {
-          let ld = new Date(item.lastDate);
-          let cd = new Date(item.createdAt);
+          let ld = new Date(item.lastDate);//Last Date
+          let cd = new Date(item.createdAt);//Created Date
 
-          //TODO implement redux, placement screen -> other stack navi,
           return (
             <Card
               heading={item.company}
@@ -83,22 +84,14 @@ const Placements = ({navigation}) => {
           );
         }}
       />
-
-
-
-      {/* <Card
-        heading={"Adobe"}
-        eligibility={"Greater than 60%"}
-        salaryPackage={"4LPA"}
-        lastDate={"13/12/21"}
-        postedDate={"10/12/21"}
-        onPress={() => checkUrl("https://www.google.com/")}
-      /> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#ffffff',
+  },
   loaderTextStyle: {
     color: 'white',
     marginBottom: 45,

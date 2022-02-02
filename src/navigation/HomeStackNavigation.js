@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
 import ForMore from '../screens/ForMore';
 import Profile from '../screens/Profile';
+import Notices from '../screens/Notices';
 
 const StackNavigator = createNativeStackNavigator();
 
@@ -21,7 +22,11 @@ const HomeStackNavigation = () => (
       options={{headerShown: false}}
     />
 
-
+    <StackNavigator.Screen
+      component={Notices}
+      name="Notices"
+      options={{headerShown: false}}
+    />
 
   </StackNavigator.Navigator>
 );
