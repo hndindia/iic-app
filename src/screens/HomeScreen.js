@@ -1,24 +1,16 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
-import {
-  ScrollView,
-} from 'react-native';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Card, LinearProgress} from 'react-native-elements';
 import Heading from '../components/Heading';
 
 const HomeScreen = ({navigation}) => {
-  
   const leftContents = () => {
     return (
       <View style={styles.cardLeft}>
         <Card containerStyle={styles.card}>
-          <TouchableOpacity style={{alignItems: 'center'}}>
+          <TouchableOpacity style={{alignItems: 'center'}} onPress={() => navigation.navigate("HomeStack",{screen:"Notices"})}>
             <Card.Image
               style={{
                 height: 60,
@@ -27,8 +19,12 @@ const HomeScreen = ({navigation}) => {
               }}
               source={require('../assets/images/notice.png')}
             />
-            <Card.Title style={{marginTop: 25, fontSize:18}}>Notices</Card.Title>
-            <Text style={{textAlign: 'center', marginBottom:10}}>Recents Updates</Text>
+            <Card.Title style={{marginTop: 25, fontSize: 18}}>
+              Notices
+            </Card.Title>
+            <Text style={{textAlign: 'center', marginBottom: 10}}>
+              Recents Updates
+            </Text>
           </TouchableOpacity>
         </Card>
 
@@ -39,12 +35,13 @@ const HomeScreen = ({navigation}) => {
                 height: 60,
                 width: 60,
                 marginTop: 20,
-
               }}
               source={require('../assets/images/quizzes_icon.png')}
             />
-            <Card.Title style={{marginTop: 18, fontSize:18}}>Quizzes</Card.Title>
-            <View style={{marginBottom:20}}>
+            <Card.Title style={{marginTop: 18, fontSize: 18}}>
+              Quizzes
+            </Card.Title>
+            <View style={{marginBottom: 20}}>
               <Text>MCA</Text>
               <Text>NP</Text>
               <Text>PPC</Text>
@@ -67,11 +64,10 @@ const HomeScreen = ({navigation}) => {
                 height: 60,
                 width: 60,
                 marginTop: 20,
-              
               }}
               source={require('../assets/images/other_opportunites_icon.png')}
             />
-            <Card.Title style={{marginTop: 20,fontSize:18}}>
+            <Card.Title style={{marginTop: 20, fontSize: 18}}>
               Other{'\n'}Opportunities
             </Card.Title>
           </TouchableOpacity>
@@ -80,14 +76,14 @@ const HomeScreen = ({navigation}) => {
           <TouchableOpacity style={{alignItems: 'center'}}>
             <Card.Title style={{margin: 18, fontSize: 18}}>Profile</Card.Title>
 
-            <Text style={{textAlign: 'center', fontWeight:'bold'}}>75%</Text>
+            <Text style={{textAlign: 'center', fontWeight: 'bold'}}>75%</Text>
 
             <LinearProgress
               variant="determinate"
               value={0.6}
-              style={{marginVertical:15}}
-              color='#73C8ED'
-            /> 
+              style={{marginVertical: 15}}
+              color="#73C8ED"
+            />
           </TouchableOpacity>
         </Card>
         <Card containerStyle={styles.card}>
@@ -96,11 +92,12 @@ const HomeScreen = ({navigation}) => {
               style={{
                 height: 50,
                 width: 50,
-
               }}
               source={require('../assets/images/notice.png')}
             />
-            <Card.Title style={{marginTop: 18, fontSize:18}}>Events</Card.Title>
+            <Card.Title style={{marginTop: 18, fontSize: 18}}>
+              Events
+            </Card.Title>
           </TouchableOpacity>
         </Card>
       </View>
