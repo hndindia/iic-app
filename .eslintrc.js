@@ -1,4 +1,20 @@
 module.exports = {
-  root: true,
-  extends: '@react-native-community',
+  env: {
+    browser: true,
+    es2021: true,
+    node: true
+  },
+  extends: ["eslint:recommended", "prettier"],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true
+    },
+    ecmaVersion: 12,
+    sourceType: "module"
+  },
+  rules: {
+    "no-unused-vars": "off",
+    semi: ["error", "always"],
+    quotes: ["error", "double"]
+  }
 };

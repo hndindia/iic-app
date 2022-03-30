@@ -1,9 +1,10 @@
-import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import HomeScreen from '../screens/HomeScreen';
-import ForMore from '../screens/ForMore';
-import Profile from '../screens/Profile';
-import Notices from '../screens/Notices';
+import React from "react";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import HomeScreen from "../screens/HomeScreen";
+import ForMore from "../screens/ForMore";
+import Profile from "../screens/Profile";
+import Notices from "../screens/Notices";
+import OtherOpportunites from "../screens/OtherOpportunites";
 
 const StackNavigator = createNativeStackNavigator();
 
@@ -25,6 +26,12 @@ const HomeStackNavigation = () => (
     <StackNavigator.Screen
       component={Notices}
       name="Notices"
+      options={{headerShown: false}}
+    />
+   
+    <StackNavigator.Screen
+      component={OtherOpportunites}
+      name="OtherOpp"
       options={{headerShown: false}}
     />
 

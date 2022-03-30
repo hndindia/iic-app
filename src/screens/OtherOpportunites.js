@@ -15,7 +15,7 @@ import {PLACEMENT} from "../api/api";
 import Heading from "../components/Heading";
 import {ScrollView} from "react-native-gesture-handler";
 
-const Placements = ({navigation}) => {
+const OtherOpportunites = ({navigation}) => {
   const [cardData, setCardData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +42,7 @@ const Placements = ({navigation}) => {
   };
 
   const header = () => {
-    return <Heading heading={"PLACEMENT\nOPPORTUNITIES"} />;
+    return <Heading heading={"OTHER\nOPPORTUNITIES"} />;
   };
 
   useEffect(() => {
@@ -99,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Placements;
+export default OtherOpportunites;
