@@ -1,10 +1,25 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {View, Text, StyleSheet, TouchableOpacity,ScrollView} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView
+} from "react-native";
 import {Card, LinearProgress} from "react-native-elements";
+import {useDispatch, useSelector} from "react-redux";
 import Heading from "../components/Heading";
+import {getUser} from "../store/Auth/authActions";
 
 const HomeScreen = ({navigation}) => {
+  const {user} = useSelector(state => state.authReducers);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
+
   const leftContents = () => {
     return (
       <View style={styles.cardLeft}>
@@ -18,7 +33,7 @@ const HomeScreen = ({navigation}) => {
               style={{
                 height: 60,
                 width: 60,
-                marginTop: 20,
+                marginTop: 20
               }}
               source={require("../assets/images/notice.png")}
             />
@@ -37,7 +52,7 @@ const HomeScreen = ({navigation}) => {
               style={{
                 height: 60,
                 width: 60,
-                marginTop: 20,
+                marginTop: 20
               }}
               source={require("../assets/images/quizzes_icon.png")}
             />
@@ -89,7 +104,7 @@ const HomeScreen = ({navigation}) => {
               style={{
                 height: 60,
                 width: 60,
-                marginTop: 0,
+                marginTop: 0
               }}
               source={require("../assets/images/other_opportunites_icon.png")}
             />
@@ -104,7 +119,7 @@ const HomeScreen = ({navigation}) => {
             <Card.Image
               style={{
                 height: 50,
-                width: 50,
+                width: 50
               }}
               source={require("../assets/images/notice.png")}
             />
@@ -122,7 +137,7 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Heading heading="Welcome Back!" subHeading="JOHN DOE" />
+        <Heading heading="Welcome Back!" subHeading={user.fullName} />
 
         <View style={styles.cardContainer}>
           {leftContents()}
@@ -138,21 +153,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#ffffff",
-    alignItems: "center",
+    alignItems: "center"
   },
   loaderTextStyle: {
     color: "white",
-    marginBottom: 45,
+    marginBottom: 45
   },
   cardContainer: {
     flex: 1,
     flexDirection: "row",
     marginTop: 0,
     padding: 10,
-    marginBottom: 30,
+    marginBottom: 30
   },
   cardLeft: {
-    marginBottom: 30,
+    marginBottom: 30
   },
   cardRight: {},
 
@@ -160,8 +175,8 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     elevation: 11,
     borderRadius: 17,
-    padding: 20,
-  },
+    padding: 20
+  }
 });
 
 export default HomeScreen;

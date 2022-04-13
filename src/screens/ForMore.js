@@ -1,6 +1,6 @@
-import React from 'react';
-import {Alert, Linking, StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React from "react";
+import {Alert, Linking, StyleSheet, Text, View} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
 
 const ForMore = ({route, navigation}) => {
   const {item} = route.params;
@@ -15,13 +15,12 @@ const ForMore = ({route, navigation}) => {
         Alert.alert(`Don't know how to open this URL: ${url}`);
       }
     } catch (err) {
-      console.log('Error - ', err);
+      console.log("Error - ", err);
     }
   };
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.companyName}>{item.company}</Text>
 
       <Text>{item.position}</Text>
@@ -70,40 +69,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 10,
-    alignItems: 'center',
+    alignItems: "center"
   },
   companyName: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 23,
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: 23
   },
   eligibilityContainer: {
     // borderColor:'red',
     // borderWidth:2,
     // flex:1,
-    flexDirection: 'row',
-    alignSelf: 'flex-start',
+    flexDirection: "row",
+    alignSelf: "flex-start",
     marginTop: 10,
-    marginLeft: 10,
+    marginLeft: 10
   },
   eligibilityHeading: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 17,
+    color: "#000",
+    fontWeight: "bold",
+    fontSize: 17
   },
   eligibilityContent: {
-    color: '#000',
-    fontSize: 15,
+    color: "#000",
+    fontSize: 15
   },
   desContainer: {
-    marginTop: 10,
+    marginTop: 10
     // marginLeft:10
   },
   link: {
-    color: '#0645AD',
-    textDecorationLine: 'underline',
-    fontSize: 15,
-  },
+    color: "#0645AD",
+    textDecorationLine: "underline",
+    fontSize: 15
+  }
 });
 
 export default ForMore;

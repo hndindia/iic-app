@@ -1,29 +1,26 @@
-import React, {useEffect} from 'react';
+import React, {useEffect} from "react";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {ActivityIndicator, Alert, StyleSheet, View} from "react-native";
 
 const LoadingScreen = ({navigation}) => {
-
   const detectUser = async () => {
-    try{
-      const token = await AsyncStorage.getItem('token');
-      
-      if(token){
-        navigation.replace('BottomTab');
-      }
-      else {
-        navigation.replace('LogIn');
-      }
+    try {
+      const token = await AsyncStorage.getItem("token");
 
-    }catch(err){
+      if (token) {
+        navigation.replace("BottomTab");
+      } else {
+        navigation.replace("LogIn");
+      }
+    } catch (err) {
       console.log("ERROR - ", err);
       // Alert.alert("Something went wrong");
     }
   };
 
   useEffect(() => {
-      detectUser();
+    detectUser();
   }, []);
 
   return (
@@ -36,9 +33,9 @@ const LoadingScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });
 
 export default LoadingScreen;

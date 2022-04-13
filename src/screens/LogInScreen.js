@@ -16,8 +16,12 @@ import AppButton from "../components/AppButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ssipmt_logo from "../assets/images/ssipmt_logo.png";
 import {Input, Icon, Button} from "react-native-elements";
+import {useSelector, useDispatch} from "react-redux";
+import {logIn} from "../store/Auth/authActions";
 
 const LogInScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   //test@ssipmt.com
   //123456
   const [email, setEmail] = useState("test@ssipmt.com");
@@ -26,11 +30,13 @@ const LogInScreen = ({navigation}) => {
 
   useEffect(() => {
     //NOTE -> this return will run when this component is unmounted. This is just to avoid the 'React memory leak warning'
-    return () => {
-      setEmail("");
-      setPassword("");
-      setIsLoading(false);
-    };
+    // dispatch(logIn(email, password));
+
+    // return () => {
+    //   setEmail("");
+    //   setPassword("");
+    //   setIsLoading(false);
+    // };
   }, []);
 
   const handleLogIn = async () => {
@@ -38,29 +44,14 @@ const LogInScreen = ({navigation}) => {
       Alert.alert("Please fill both the information correctly.");
       return;
     }
+    setIsLoading(true);
 
-    try {
-      setIsLoading(true);
+    dispatch(logIn(email, password));
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      };
+    navigation.replace("BottomTab");
 
-      const {data} = await axios.post(LOGIN, {email, password}, config);
+    setIsLoading(false);
 
-      console.log("TOKEN - ", data.token);
-      await AsyncStorage.setItem("token", data.token);
-
-      navigation.replace("BottomTab");
-
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-      console.log("Error", err.error);
-      // Alert.alert('Something went wrong please try again later');
-    }
   };
 
   const checkUrl = async url => {

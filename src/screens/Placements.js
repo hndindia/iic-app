@@ -11,9 +11,9 @@ import {
 } from "react-native";
 import Card from "../components/Card";
 import Loader from "react-native-loading-spinner-overlay";
-import {PLACEMENT} from "../api/api";
 import Heading from "../components/Heading";
 import {ScrollView} from "react-native-gesture-handler";
+import { API } from "../api/api";
 
 const Placements = ({navigation}) => {
   const [cardData, setCardData] = useState([]);
@@ -30,7 +30,7 @@ const Placements = ({navigation}) => {
         },
       };
 
-      const {data} = await axios.post(PLACEMENT, {}, config);
+      const {data} = await axios.post(API.USER.GET_PLACEMENT, {}, config);
       console.log("DATA OF CARD - ", typeof data);
       setCardData(data.placement);
 
