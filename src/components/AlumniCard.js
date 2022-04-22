@@ -9,29 +9,21 @@ import {
   FlatList
 } from "react-native";
 import {Avatar} from "react-native-elements";
-import Heading from "./Heading";
 import LinkedIn from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/Entypo";
-import {useDispatch, useSelector} from "react-redux";
-import {getAlumni} from "../store/User/userActions";
-import Loader from "react-native-loading-spinner-overlay";
-import {API} from "../api/api";
-import axios from "axios";
+import {getAlumni} from "../services/userService";
 
 const AlumniCard = ({company_name, company_id, style}) => {
-  // const {alumni} = useSelector(state => state.userReducers);
-  const dispatch = useDispatch();
   const [alumni, setAlumni] = useState([]);
 
   useEffect(() => {
     const getAlumniData = async () => {
       try {
-        const {data} = await axios.get(
-          `${API.USER.GET_ALUMNI}?company_id=${company_id}`
-        );
-        setAlumni(data.data);
+        const res = await getAlumni(company_id);
+        console.log("R - ,", res);
+        setAlumni(res.data);
       } catch (error) {
-        console.log("ERR - ", error);
+        Alert.alert("Something went wrong please try again later.");
       }
     };
 

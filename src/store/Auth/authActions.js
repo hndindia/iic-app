@@ -2,9 +2,11 @@ import axios from "axios";
 import {API_URL} from "@env";
 import {API} from "../../api/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Alert } from "react-native";
 
 export const LOGIN = "LOGIN";
 export const GET_USER = "GET_USER";
+export const ERROR = "ERROR";
 
 const config = {
   headers: {
@@ -24,12 +26,14 @@ export const logIn = (email, password) => {
       );
       console.log("D  -- ", data);
       await AsyncStorage.setItem("token", data.token);
-      return dispatch({
+      dispatch({
         type: LOGIN,
         payload: data
       });
     } catch (error) {
-      console.log("ERR - ", error.message);
+      console.log("ERR!! - ", error.message);
+      Alert.alert("Something went wrong please try again later!");
+
     }
   };
 };
@@ -37,10 +41,9 @@ export const logIn = (email, password) => {
 export const getUser = () => {
   return async dispatch => {
     try {
-      console.log("A");
       const token = await AsyncStorage.getItem("token");
       const {data} = await axios.post(API.AUTH.GET_USER, {token}, config);
-
+      console.log("U - ", data);
       dispatch({
         type: GET_USER,
         payload: data

@@ -1,27 +1,39 @@
 import React, {useEffect, useState} from "react";
 import {
   View,
-  Text,
-  Button,
   Alert,
   StyleSheet,
   FlatList,
-  Linking
 } from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import {getAlumni, getCompany} from "../store/User/userActions";
 import Loader from "react-native-loading-spinner-overlay";
 import AlumniCard from "../components/AlumniCard";
 import Heading from "../components/Heading";
+import { getCompany } from "../services/userService";
 
 const Alumni = ({navigation}) => {
-  const {alumni, company} = useSelector(state => state.userReducers);
-  const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(true);
+
+  const [company, setCompany] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
-    dispatch(getCompany());
+    
+    const getCompanyFromDB = async () => {
+      try {
+        const res = await getCompany();
+
+        console.log("R ", res);
+        
+        setCompany(res.data);
+        
+      } catch (error) {
+        Alert.alert("Something went wrong please try again later.");
+      }
+    };
+
+    getCompanyFromDB();
+
     setTimeout(() => {
       setIsLoading(false);
     }, 1500);
@@ -44,7 +56,6 @@ const Alumni = ({navigation}) => {
           keyExtractor={id => id._id}
           renderItem={({item}) => {
             return (
-
               <AlumniCard company_name={item.name} company_id={item._id} />
             );
           }}
@@ -53,29 +64,6 @@ const Alumni = ({navigation}) => {
     </View>
   );
 };
-{
-  /* company.map((d,i) => {
-  return <AlumniCard key={i} company_name={d.name} company_id={d._id} />;
-}) */
-}
-{
-  /* <FlatList
-  data={alumni}
-  keyExtractor={id => id._id}
-  renderItem={({item}) => {
-    return <AlumniCard alumni={item} />;
-  }}
-/> */
-}
-
-/*
-
-   alumni.map((d,i) => {
-          console.log("D - ", d);
-          return <AlumniCard alumni={d} index={i} />;
-        }) 
-
-*/
 
 const styles = StyleSheet.create({
   container: {

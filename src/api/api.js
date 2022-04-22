@@ -1,9 +1,6 @@
 // export const API_URL = "http://10.0.2.2:3001/api/v1";
 import {API_URL} from "@env";
 console.log("APi - ", API_URL);
-export const REGISTER = `${API_URL}/student/auth/register`;
-export const LOGIN = `${API_URL}/student/auth/login`;
-export const PLACEMENT = `${API_URL}/placememt/getAllPlacement`;
 
 export const API = {
   AUTH: {

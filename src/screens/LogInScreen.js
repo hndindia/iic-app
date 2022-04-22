@@ -1,27 +1,19 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Alert,
   Image,
   Linking
 } from "react-native";
 import Loader from "react-native-loading-spinner-overlay";
-import {API, LOGIN, REGISTER} from "../api/api";
-import AppButton from "../components/AppButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import ssipmt_logo from "../assets/images/ssipmt_logo.png";
 import {Input, Icon, Button} from "react-native-elements";
-import {useSelector, useDispatch} from "react-redux";
-import {logIn} from "../store/Auth/authActions";
+import {logIn} from "../services/authService";
 
 const LogInScreen = ({navigation}) => {
-  const dispatch = useDispatch();
-
   //test@ssipmt.com
   //123456
   const [email, setEmail] = useState("test@ssipmt.com");
@@ -30,13 +22,12 @@ const LogInScreen = ({navigation}) => {
 
   useEffect(() => {
     //NOTE -> this return will run when this component is unmounted. This is just to avoid the 'React memory leak warning'
-    // dispatch(logIn(email, password));
 
-    // return () => {
-    //   setEmail("");
-    //   setPassword("");
-    //   setIsLoading(false);
-    // };
+    return () => {
+      setEmail("");
+      setPassword("");
+      setIsLoading(false);
+    };
   }, []);
 
   const handleLogIn = async () => {
@@ -46,12 +37,18 @@ const LogInScreen = ({navigation}) => {
     }
     setIsLoading(true);
 
-    dispatch(logIn(email, password));
+    try {
+      const res = await logIn(email, password);
 
-    navigation.replace("BottomTab");
-
+      res.error
+        ? Alert.alert("Something went wrong please try again later.")
+        : navigation.replace("BottomTab");
+        
+    } catch (error) {
+      Alert.alert("Something went wrong please try again later.");
+    }
+    
     setIsLoading(false);
-
   };
 
   const checkUrl = async url => {

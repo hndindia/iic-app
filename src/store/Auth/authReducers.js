@@ -1,8 +1,9 @@
-import {GET_USER, LOGIN} from "./authActions";
+import {ERROR, GET_USER, LOGIN} from "./authActions";
 
 const initialState = {
   token:"",
-  user:{}
+  user:{},
+  isError:false,
 };
 
 const authReducers = (state = initialState, action) => {
@@ -12,6 +13,9 @@ const authReducers = (state = initialState, action) => {
     
     case GET_USER:
       return {...state, user:action.payload.user};
+    
+    case ERROR:
+      return {...state, isError:true};
 
     default:
       return state;

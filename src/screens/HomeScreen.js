@@ -1,23 +1,31 @@
-import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import {Card, LinearProgress} from "react-native-elements";
-import {useDispatch, useSelector} from "react-redux";
 import Heading from "../components/Heading";
-import {getUser} from "../store/Auth/authActions";
+import {getUser} from "../services/authService";
 
 const HomeScreen = ({navigation}) => {
-  const {user} = useSelector(state => state.authReducers);
+  const [fullName, setFullName] = useState();
 
-  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUser());
+    const getUserFromDB = async () => {
+      try {
+        const res = await getUser();
+
+        res.error ? setFullName("") : setFullName(res.user.fullName);
+      } catch (error) {
+        Alert.alert("Something went wrong please try again later.");
+      }
+    };
+
+    getUserFromDB();
   }, []);
 
   const leftContents = () => {
@@ -137,7 +145,7 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Heading heading="Welcome Back!" subHeading={user.fullName} />
+        <Heading heading="Welcome Back!" subHeading={fullName} />
 
         <View style={styles.cardContainer}>
           {leftContents()}
