@@ -8,25 +8,18 @@ import {
   Alert
 } from "react-native";
 import {Card, LinearProgress} from "react-native-elements";
+import {useQuery} from "react-query";
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
 import Heading from "../components/Heading";
 import {getUser} from "../services/authService";
 
 const HomeScreen = ({navigation}) => {
-  const [fullName, setFullName] = useState();
+  const {isLoading, isError, data, error} = useQuery("user", getUser);
 
-  useEffect(() => {
-    const getUserFromDB = async () => {
-      try {
-        const res = await getUser();
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-        res.error ? setFullName("") : setFullName(res.user.fullName);
-      } catch (error) {
-        Alert.alert("Something went wrong please try again later.");
-      }
-    };
-
-    getUserFromDB();
-  }, []);
+  if (isError) return <Error />;
 
   const leftContents = () => {
     return (
@@ -145,7 +138,7 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Heading heading="Welcome Back!" subHeading={fullName} />
+        <Heading heading="Welcome Back!" subHeading={data.user.fullName} />
 
         <View style={styles.cardContainer}>
           {leftContents()}
@@ -162,10 +155,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#ffffff",
     alignItems: "center"
-  },
-  loaderTextStyle: {
-    color: "white",
-    marginBottom: 45
   },
   cardContainer: {
     flex: 1,

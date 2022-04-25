@@ -1,35 +1,21 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Text, StyleSheet} from "react-native";
-import {useDispatch, useSelector} from "react-redux";
-import Loader from "react-native-loading-spinner-overlay";
-import {getUser} from "../store/Auth/authActions";
+import { useQuery } from "react-query";
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
+import {getUser} from "../services/authService";
 
 const Profile = () => {
-  const {user} = useSelector(state => state.authReducers);
-  const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    dispatch(getUser());
-    setIsLoading(false);
-  }, []);
+  const {isLoading, isError, data, error} = useQuery("user", getUser);
 
-  console.log("U - ", user);
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
+
+  if (isError) return <Error />;
 
   return (
     <>
-      {isLoading ? (
-        <Loader
-          visible={isLoading}
-          textContent="Please wait"
-          textStyle={styles.loaderTextStyle}
-          color="#fff"
-          animation="fade"
-        />
-      ) : (
-        <Text>Hello {user.fullName}</Text>
-      )}
+      <Text>Hello {data.user.fullName}</Text>
     </>
   );
 };

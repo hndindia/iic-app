@@ -11,24 +11,20 @@ import {
 import {Avatar} from "react-native-elements";
 import LinkedIn from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/Entypo";
+import {useQuery} from "react-query";
 import {getAlumni} from "../services/userService";
+import AppLoader from "./AppLoader";
+import Error from "./Error";
 
 const AlumniCard = ({company_name, company_id, style}) => {
-  const [alumni, setAlumni] = useState([]);
+  const {isLoading, isError, data, error} = useQuery(
+    ["alumni", company_id],
+    () => getAlumni(company_id)
+  );
 
-  useEffect(() => {
-    const getAlumniData = async () => {
-      try {
-        const res = await getAlumni(company_id);
-        console.log("R - ,", res);
-        setAlumni(res.data);
-      } catch (error) {
-        Alert.alert("Something went wrong please try again later.");
-      }
-    };
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-    getAlumniData();
-  }, []);
+  // if (isError) return <Error />;
 
   const checkUrl = async url => {
     try {
@@ -47,7 +43,7 @@ const AlumniCard = ({company_name, company_id, style}) => {
   const displayCards = () => {
     return (
       <FlatList
-        data={alumni}
+        data={data.data}
         keyExtractor={id => id._id}
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -96,7 +92,7 @@ const AlumniCard = ({company_name, company_id, style}) => {
 
   return (
     <View style={{backgroundColor: "#FFFFFF"}}>
-      {alumni.length === 0 ? null : (
+      {data.data.length === 0 ? null : (
         <>
           <Text style={styles.companyName}>{company_name}</Text>
           {displayCards()}

@@ -1,14 +1,15 @@
 import React from "react";
 
 import RootNavigator from "./src/navigation/index";
-import {Provider} from "react-redux";
-import {store} from "./src/store";
+import {QueryClient, QueryClientProvider} from "react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
       <RootNavigator />
-    </Provider>
+    </QueryClientProvider>
   );
 };
 

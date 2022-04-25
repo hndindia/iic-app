@@ -1,71 +1,31 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
-import {
-  View,
-  Text,
-  Button,
-  Alert,
-  StyleSheet,
-  FlatList,
-  Linking,
-} from "react-native";
+import {View, Alert, StyleSheet, FlatList} from "react-native";
 import Card from "../components/Card";
-import Loader from "react-native-loading-spinner-overlay";
 import Heading from "../components/Heading";
-import {ScrollView} from "react-native-gesture-handler";
-import { API } from "../api/api";
+import {getPlacement} from "../services/userService";
+import AppLoader from "../components/AppLoader";
+import {useQuery} from "react-query";
+import Error from "../components/Error";
 
 const Placements = ({navigation}) => {
-  const [cardData, setCardData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const {isLoading, isError, data} = useQuery("placements", getPlacement);
 
-  const fetchCardData = async () => {
-    try {
-      setIsLoading(true);
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-      const config = {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-
-      const {data} = await axios.post(API.USER.GET_PLACEMENT, {}, config);
-      console.log("DATA OF CARD - ", typeof data);
-      setCardData(data.placement);
-
-      setIsLoading(false);
-    } catch (err) {
-      console.log("Error - ", err);
-      Alert.alert("Something went wrong please try again.");
-    }
-  };
-
-  const header = () => {
-    return <Heading heading={"PLACEMENT\nOPPORTUNITIES"} />;
-  };
-
-  useEffect(() => {
-    fetchCardData();
-  }, []);
+  if (isError) return <Error />;
 
   return (
     <View style={styles.container}>
-      <Loader
-        visible={isLoading}
-        textContent="Please wait"
-        textStyle={styles.loaderTextStyle}
-        color="#fff"
-        animation="fade"
-      />
-
       <FlatList
-        ListHeaderComponent={header}
-        data={cardData}
+        ListHeaderComponent={() => (
+          <Heading heading={"PLACEMENT\nOPPORTUNITIES"} />
+        )}
+        data={data.placement}
         keyExtractor={id => id._id}
         renderItem={({item}) => {
-          let ld = new Date(item.lastDate);//Last Date
-          let cd = new Date(item.createdAt);//Created Date
+          let ld = new Date(item.lastDate); //Last Date
+          let cd = new Date(item.createdAt); //Created Date
 
           return (
             <Card
@@ -77,7 +37,7 @@ const Placements = ({navigation}) => {
               onPress={() =>
                 navigation.navigate("HomeStack", {
                   screen: "ForMore",
-                  params: {item},
+                  params: {item}
                 })
               }
             />
@@ -90,13 +50,9 @@ const Placements = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor: "#ffffff",
-  },
-  loaderTextStyle: {
-    color: "white",
-    marginBottom: 45,
-  },
+    flex: 1,
+    backgroundColor: "#ffffff"
+  }
 });
 
 export default Placements;

@@ -1,66 +1,29 @@
 import React, {useEffect, useState} from "react";
-import {
-  View,
-  Alert,
-  StyleSheet,
-  FlatList,
-} from "react-native";
-import Loader from "react-native-loading-spinner-overlay";
+import {View, StyleSheet, FlatList, Text} from "react-native";
+import {useQuery} from "react-query";
 import AlumniCard from "../components/AlumniCard";
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
 import Heading from "../components/Heading";
-import { getCompany } from "../services/userService";
+import {getCompany} from "../services/userService";
 
-const Alumni = ({navigation}) => {
+const Alumni = () => {
+  const {isLoading, isError, data, error} = useQuery("company", getCompany);
 
-  const [isLoading, setIsLoading] = useState(true);
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-  const [company, setCompany] = useState([]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    
-    const getCompanyFromDB = async () => {
-      try {
-        const res = await getCompany();
-
-        console.log("R ", res);
-        
-        setCompany(res.data);
-        
-      } catch (error) {
-        Alert.alert("Something went wrong please try again later.");
-      }
-    };
-
-    getCompanyFromDB();
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  }, []);
+  if (isError) return <Error />;
 
   return (
     <View styles={styles.container}>
-      {isLoading ? (
-        <Loader
-          visible={isLoading}
-          textContent="Please wait"
-          textStyle={styles.loaderTextStyle}
-          color="#fff"
-          animation="fade"
-        />
-      ) : (
-        <FlatList
-          ListHeaderComponent={() => <Heading heading="ALUMNI" />}
-          data={company}
-          keyExtractor={id => id._id}
-          renderItem={({item}) => {
-            return (
-              <AlumniCard company_name={item.name} company_id={item._id} />
-            );
-          }}
-        />
-      )}
+      <FlatList
+        ListHeaderComponent={() => <Heading heading="ALUMNI" />}
+        data={data.data}
+        keyExtractor={id => id._id}
+        renderItem={({item}) => {
+          return <AlumniCard company_name={item.name} company_id={item._id} />;
+        }}
+      />
     </View>
   );
 };
@@ -68,10 +31,6 @@ const Alumni = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#ffffff"
-  },
-  loaderTextStyle: {
-    color: "white",
-    marginBottom: 45
   }
 });
 

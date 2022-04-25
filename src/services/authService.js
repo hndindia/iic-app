@@ -9,7 +9,6 @@ export const logIn = async (email, password) => {
     }
   };
 
-  try {
     console.log("API - ", API.AUTH.LOGIN);
 
     const {data} = await axios.post(API.AUTH.LOGIN, {email, password}, config);
@@ -17,27 +16,19 @@ export const logIn = async (email, password) => {
     await AsyncStorage.setItem("token", data.token);
 
     return data;
-  } catch (error) {
-    console.log("ERR!! - ", error.message);
-    return {error};
-  }
+
 };
 
 export const getUser = async () => {
+  const token = await AsyncStorage.getItem("token");
   const config = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     }
   };
 
-  try {
-    const token = await AsyncStorage.getItem("token");
-    const {data} = await axios.post(API.AUTH.GET_USER, {token}, config);
-    console.log("U - ", data);
+  const {data} = await axios.get(API.AUTH.GET_USER, config);
 
-    return data;
-  } catch (error) {
-    console.log("ERR - ", error);
-    return {error};
-  }
+  return data;
 };

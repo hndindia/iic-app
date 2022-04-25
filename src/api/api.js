@@ -1,5 +1,5 @@
-// export const API_URL = "http://10.0.2.2:3001/api/v1";
-import {API_URL} from "@env";
+export const API_URL = "http://10.0.2.2:3001/api/v1";
+// import {API_URL} from "@env";
 console.log("APi - ", API_URL);
 
 export const API = {

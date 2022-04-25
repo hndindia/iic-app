@@ -12,13 +12,18 @@ import Loader from "react-native-loading-spinner-overlay";
 import ssipmt_logo from "../assets/images/ssipmt_logo.png";
 import {Input, Icon, Button} from "react-native-elements";
 import {logIn} from "../services/authService";
+import {useMutation} from "react-query";
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
 
 const LogInScreen = ({navigation}) => {
   //test@ssipmt.com
   //123456
   const [email, setEmail] = useState("test@ssipmt.com");
   const [password, setPassword] = useState("123456");
-  const [isLoading, setIsLoading] = useState(false);
+
+  const {isLoading, mutate} = useMutation(data => logIn(data.email, data.password));
+
 
   useEffect(() => {
     //NOTE -> this return will run when this component is unmounted. This is just to avoid the 'React memory leak warning'
@@ -26,7 +31,6 @@ const LogInScreen = ({navigation}) => {
     return () => {
       setEmail("");
       setPassword("");
-      setIsLoading(false);
     };
   }, []);
 
@@ -35,20 +39,18 @@ const LogInScreen = ({navigation}) => {
       Alert.alert("Please fill both the information correctly.");
       return;
     }
-    setIsLoading(true);
 
-    try {
-      const res = await logIn(email, password);
-
-      res.error
-        ? Alert.alert("Something went wrong please try again later.")
-        : navigation.replace("BottomTab");
-        
-    } catch (error) {
-      Alert.alert("Something went wrong please try again later.");
-    }
-    
-    setIsLoading(false);
+    mutate(
+      {email, password},
+      {
+        onSuccess: result => {
+          navigation.replace("BottomTab");
+        },
+        onError: error => {
+          Alert.alert("Something went wrong please try again later.");
+        }
+      }
+    );
   };
 
   const checkUrl = async url => {
