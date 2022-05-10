@@ -48,3 +48,18 @@ export const getPlacement = async () => {
 
   return data;
 };
+
+export const getNotices = async (bId) => {
+  const token = await AsyncStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const {data} = await axios.get(`${API.USER.GET_NOTICE}/?branch_id=${bId}`, config);
+
+  return data;
+
+};

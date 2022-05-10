@@ -1,16 +1,26 @@
-import React, {useState, useEffect, createContext} from 'react';
+import React, {createContext} from "react";
+import {useQuery} from "react-query";
 
 const AuthContext = createContext();
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
+import {getUser} from "../services/authService";
 
 export const AuthContextProvider = ({children}) => {
-  
-  return (
-    
-  );
+  const {isLoading, isError, data: userData, error} = useQuery("user", getUser);
 
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
+
+  // console.log("DATAAA - ", userData);
+
+  // if (isError) return <Error />;
+
+  return (
+    <AuthContext.Provider value={{userData, isError, isLoading}}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export { AuthContext, AuthContextProvider };
+export default AuthContext;
