@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, {useEffect, useState} from "react";
+import React, {useContext} from "react";
 import {
   View,
   Text,
@@ -9,60 +9,54 @@ import {
   FlatList,
   Linking,
   Image,
-  Dimensions,
+  Dimensions
 } from "react-native";
 import Heading from "../components/Heading";
-import Loader from "react-native-loading-spinner-overlay";
-import {ScrollView} from "react-native-gesture-handler";
 import Pdf from "react-native-pdf";
 import {Card, LinearProgress} from "react-native-elements";
 import WebView from "react-native-webview";
+import {getNotices} from "../services/userService";
+import AppLoader from "../components/AppLoader";
+import Error from "../components/Error";
+import {useQuery} from "react-query";
+import AuthContext from "../context/AuthContext";
 
 const Notices = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const {userData} = useContext(AuthContext);
 
+  const {isLoading, isError, data, error} = useQuery("notice", () =>
+    getNotices(userData.user.branch._id)
+  );
 
-  const fetchNoticesData = () => {
-    setIsLoading(true);
-   
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-  useEffect(() => {
-    fetchNoticesData();
-    
-  }, []);
-
-  const header = () => {
-    return <Heading heading="Notices" />;
-  };
-
+  if (isError) return <Error />;
 
   return (
     <View style={styles.container}>
-      <Loader
-        visible={isLoading}
-        textContent="Please wait"
-        textStyle={styles.loaderTextStyle}
-        color="#fff"
-        animation="fade"
+      <FlatList
+        ListHeaderComponent={() => <Heading heading="Notices" />}
+        data={data.data}
+        keyExtractor={id => id._id}
+        renderItem={({item}) => {
+          console.log("DATA 1 ", item);
+          return (
+            <Card containerStyle={styles.card}>
+              <Card.Image
+                style={{
+                  // height: 40,
+                  // width: 40,
+                  marginTop: 20
+                }}
+                source={{
+                  uri: "https://drive.google.com/thumbnail?id=1aSzwkpCFi5uU2-tRKpfVQNxIlQZ4FsSV&sz=w200-h200"
+                }}
+              />
+              <Text>{item.name}</Text>
+            </Card>
+          );
+        }}
       />
-   
-      <Card containerStyle={styles.card}>
-
-        <Card.Image
-          style={{
-            height: 40,
-            width: 40,
-            marginTop: 20,
-          }}
-          source={require("../assets/images/notice.png")}
-        />
-      </Card>
-
-
     </View>
   );
 };
@@ -70,18 +64,16 @@ const Notices = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#ffffff"
   },
-  loaderTextStyle: {
-    color: "white",
-    marginBottom: 45,
-  },
+
   card: {
     shadowColor: "#000",
     elevation: 11,
     borderRadius: 17,
-    // padding: 20,
-  },
+    padding: 20,
+    marginBottom: 20
+  }
 });
 
 export default Notices;

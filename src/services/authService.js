@@ -20,6 +20,7 @@ export const logIn = async (email, password) => {
 };
 
 export const getUser = async () => {
+  console.log("API Called");
   const token = await AsyncStorage.getItem("token");
   const config = {
     headers: {
