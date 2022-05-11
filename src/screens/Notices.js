@@ -43,16 +43,11 @@ const Notices = ({navigation}) => {
           return (
             <Card containerStyle={styles.card}>
               <Card.Image
-                style={{
-                  // height: 40,
-                  // width: 40,
-                  marginTop: 20
-                }}
                 source={{
-                  uri: "https://drive.google.com/thumbnail?id=1aSzwkpCFi5uU2-tRKpfVQNxIlQZ4FsSV&sz=w200-h200"
+                  uri: item.thumbnail_link
                 }}
               />
-              <Text>{item.name}</Text>
+              <Text>{item.file_name}</Text>
             </Card>
           );
         }}
