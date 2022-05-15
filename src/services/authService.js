@@ -9,14 +9,13 @@ export const logIn = async (email, password) => {
     }
   };
 
-    console.log("API - ", API.AUTH.LOGIN);
+  console.log("API - ", API.AUTH.LOGIN);
 
-    const {data} = await axios.post(API.AUTH.LOGIN, {email, password}, config);
+  const {data} = await axios.post(API.AUTH.LOGIN, {email, password}, config);
 
-    await AsyncStorage.setItem("token", data.token);
+  await AsyncStorage.setItem("token", data.token);
 
-    return data;
-
+  return data;
 };
 
 export const getUser = async () => {
@@ -30,6 +29,20 @@ export const getUser = async () => {
   };
 
   const {data} = await axios.get(API.AUTH.GET_USER, config);
+
+  return data;
+};
+
+export const getIsLoggedIn = async () => {
+  const token = await AsyncStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const {data} = await axios.get(API.AUTH.IS_LOGGED_IN, config);
 
   return data;
 };

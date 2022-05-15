@@ -1,10 +1,10 @@
 import React from "react";
 import {StyleSheet, Text, View} from "react-native";
 
-const Heading = ({heading, subHeading}) => {
+const Heading = ({heading, subHeading, style}) => {
   return (
     <View style={{backgroundColor:"#fff"}}>
-      <Text style={styles.heading}>{heading}</Text>
+      <Text style={[styles.heading, style]}>{heading}</Text>
 
       <Text style={styles.subHeading}>{subHeading}</Text>
     </View>

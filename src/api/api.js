@@ -6,7 +6,8 @@ export const API = {
   AUTH: {
     REGISTER: `${API_URL}/student/auth/register`,
     LOGIN: `${API_URL}/student/auth/login`,
-    GET_USER:`${API_URL}/student/auth/user`
+    GET_USER:`${API_URL}/student/auth/user`,
+    IS_LOGGED_IN: `${API_URL}/auth/isloggedin`
   },
   USER:{
     GET_PLACEMENT:`${API_URL}/placememt/getAllPlacement`,

@@ -1,21 +1,21 @@
 import React, {useEffect} from "react";
 
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {ActivityIndicator, Alert, StyleSheet, View} from "react-native";
+import {ActivityIndicator, StyleSheet, View} from "react-native";
+import {getIsLoggedIn} from "../services/authService";
 
 const LoadingScreen = ({navigation}) => {
   const detectUser = async () => {
     try {
-      const token = await AsyncStorage.getItem("token");
+      const data = await getIsLoggedIn();
 
-      if (token) {
-        navigation.replace("BottomTab");
-      } else {
-        navigation.replace("LogIn");
-      }
+      console.log("DAYA - ", data);
+
+      if (data.success) navigation.replace("BottomTab");
+      else navigation.replace("LogIn");
     } catch (err) {
-      console.log("ERROR - ", err);
-      // Alert.alert("Something went wrong");
+      console.log("Loading Screen ERROR - ", err);
+
+      navigation.replace("LogIn");
     }
   };
 

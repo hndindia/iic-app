@@ -9,9 +9,9 @@ import {AuthContextProvider} from "./src/context/AuthContext";
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
+      {/* <AuthContextProvider> */}
         <RootNavigator />
-      </AuthContextProvider>
+      {/* </AuthContextProvider> */}
     </QueryClientProvider>
   );
 };

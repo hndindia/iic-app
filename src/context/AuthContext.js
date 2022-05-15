@@ -1,26 +1,30 @@
-import React, {createContext} from "react";
+import React, {createContext, useEffect, useState} from "react";
 import {useQuery} from "react-query";
 
 const AuthContext = createContext();
 
 import AppLoader from "../components/AppLoader";
 import Error from "../components/Error";
-import {getUser} from "../services/authService";
+import {getUser, getIsLoggedIn} from "../services/authService";
 
 export const AuthContextProvider = ({children}) => {
-  const {isLoading, isError, data: userData, error} = useQuery("user", getUser);
+  // const {isLoading, isError, data} = useQuery("isloggedin", getIsLoggedIn);
 
-  if (isLoading) return <AppLoader isLoading={isLoading} />;
+  // if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-  // console.log("DATAAA - ", userData);
+  // let userData;
+  // if (isSuccess) {
+  //   const {isLoading, data, error} = useQuery("user", getUser);
+  //   if (isLoading) return <AppLoader isLoading={isLoading} />;
+  //   console.log("d", userData);
+  //   userData = data;
+  // }
 
-  // if (isError) return <Error />;
+  // // console.log("DATAAA - ", userData);
 
-  return (
-    <AuthContext.Provider value={{userData, isError, isLoading}}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // // if (isError) return <Error />;
+
+  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;
