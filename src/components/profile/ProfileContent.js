@@ -96,7 +96,15 @@ const ProfileContent = data => {
             if (inputSkills === undefined) {
               return showToast("Please add skills in the input box.");
             }
-            handleAddSkillSubmit(inputSkills.split(", "));
+
+            let inputSkillsArray = inputSkills.replace(/\s/g, "").split(",");
+            console.log("inputSkillsArray- ", inputSkillsArray);
+
+            if (skills.length + inputSkillsArray.length > 15) {
+              return showToast("Cannot add more than 15 skills.");
+            }
+
+            handleAddSkillSubmit(inputSkillsArray);
           }}
         />
       </Overlay>
@@ -142,7 +150,7 @@ const ProfileContent = data => {
         <TouchableOpacity
           onPress={() => {
             skills.length >= 15
-              ? showToast("Cannot add more skills")
+              ? showToast("Cannot add more than 15 skills")
               : setSkillModalVisible(!skillModalVisible);
           }}>
           <Icon
@@ -181,8 +189,6 @@ const ProfileContent = data => {
         </View>
       )}
       {showAddSkillModal()}
-
-
 
       <Divider orientation="horizontal" width={1.5} style={styles.divider} />
     </View>
