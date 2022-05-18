@@ -49,7 +49,7 @@ export const getPlacement = async () => {
   return data;
 };
 
-export const getNotices = async (bId) => {
+export const getNotices = async bId => {
   const token = await AsyncStorage.getItem("token");
   const config = {
     headers: {
@@ -58,8 +58,42 @@ export const getNotices = async (bId) => {
     }
   };
 
-  const {data} = await axios.get(`${API.USER.GET_NOTICE}/?branch_id=${bId}`, config);
+  const {data} = await axios.get(
+    `${API.USER.GET_NOTICE}/?branch_id=${bId}`,
+    config
+  );
 
   return data;
+};
 
+export const updateUser = async userData => {
+  const token = await AsyncStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
+
+  const {data} = await axios.patch(`${API.USER.POST_USER}`, {userData}, config);
+
+  return data;
+};
+
+export const deleteUser = async userData => {
+  //userData - "skill_index=3" or "work_index=3"
+  
+  const token = await AsyncStorage.getItem("token");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
+  const {data} = await axios.delete(
+    `${API.USER.DELETE_USER}/?${userData}`,
+    config
+  );
+
+  return data;
 };

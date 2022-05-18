@@ -3,10 +3,11 @@ import {StyleSheet, Text, View} from "react-native";
 
 const Heading = ({heading, subHeading, style}) => {
   return (
-    <View style={{backgroundColor:"#fff"}}>
+    <View style={{backgroundColor: "#fff"}}>
       <Text style={[styles.heading, style]}>{heading}</Text>
-
-      <Text style={styles.subHeading}>{subHeading}</Text>
+      {subHeading === undefined ? null : (
+        <Text style={styles.subHeading}>{subHeading}</Text>
+      )}
     </View>
   );
 };

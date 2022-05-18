@@ -15,7 +15,7 @@ import Heading from "../components/Heading";
 import {getUser} from "../services/authService";
 
 const HomeScreen = ({navigation}) => {
-  const {isLoading, isError, data, error} = useQuery("user", getUser);
+  const {isLoading, isError, data: userData, error} = useQuery("user", getUser);
 
   if (isLoading) return <AppLoader isLoading={isLoading} />;
 
@@ -28,7 +28,10 @@ const HomeScreen = ({navigation}) => {
           <TouchableOpacity
             style={{alignItems: "center"}}
             onPress={() =>
-              navigation.navigate("HomeStack", {screen: "Notices"})
+              navigation.navigate("HomeStack", {
+                screen: "Notices",
+                params: {userData}
+              })
             }>
             <Card.Image
               style={{
@@ -82,16 +85,13 @@ const HomeScreen = ({navigation}) => {
               navigation.navigate("HomeStack", {screen: "Profile"})
             }
             style={{alignItems: "center"}}>
-            <Card.Title style={{margin: 18, fontSize: 18}}>Profile</Card.Title>
+            <Card.Title style={{margin: 18, fontSize: 18}}>
+              Study{"\n"}material
+            </Card.Title>
 
-            <Text style={{textAlign: "center", fontWeight: "bold"}}>75%</Text>
-
-            <LinearProgress
-              variant="determinate"
-              value={0.6}
-              style={{marginVertical: 15}}
-              color="#73C8ED"
-            />
+            <Text style={{textAlign: "center", fontWeight: "bold"}}>
+              {userData.user.semester.value} Sem
+            </Text>
           </TouchableOpacity>
         </Card>
 
@@ -138,7 +138,7 @@ const HomeScreen = ({navigation}) => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Heading heading="Welcome Back!" subHeading={data.user.fullName} />
+        <Heading heading="Welcome Back!" subHeading={userData.user.fullName} />
 
         <View style={styles.cardContainer}>
           {leftContents()}

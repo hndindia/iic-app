@@ -8,10 +8,9 @@ const LoadingScreen = ({navigation}) => {
     try {
       const data = await getIsLoggedIn();
 
-      console.log("DAYA - ", data);
-
       if (data.success) navigation.replace("BottomTab");
       else navigation.replace("LogIn");
+      
     } catch (err) {
       console.log("Loading Screen ERROR - ", err);
 

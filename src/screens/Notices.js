@@ -21,9 +21,9 @@ import Error from "../components/Error";
 import {useQuery} from "react-query";
 import AuthContext from "../context/AuthContext";
 
-const Notices = ({navigation}) => {
-  const {userData} = useContext(AuthContext);
-  
+const Notices = ({route}) => {
+  const {userData} = route.params;
+
   const {isLoading, isError, data, error} = useQuery("notice", () =>
     getNotices(userData.user.branch._id)
   );

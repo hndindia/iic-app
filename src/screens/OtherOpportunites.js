@@ -45,9 +45,9 @@ const OtherOpportunites = ({navigation}) => {
     return <Heading heading={"OTHER\nOPPORTUNITIES"} />;
   };
 
-  useEffect(() => {
-    fetchCardData();
-  }, []);
+  // useEffect(() => {
+  //   fetchCardData();
+  // }, []);
 
   return (
     <View style={styles.container}>
