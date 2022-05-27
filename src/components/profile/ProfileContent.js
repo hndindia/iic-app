@@ -5,19 +5,23 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  ToastAndroid
+  ToastAndroid,
+  ScrollView
 } from "react-native";
+import DatePicker from "react-native-date-picker";
 import {
   Avatar,
   Divider,
   Icon,
   Input,
   Overlay,
-  Button
+  Button,
+  CheckBox
 } from "react-native-elements";
 import {useMutation} from "react-query";
 import {deleteUser, updateUser} from "../../services/userService";
 import Heading from "../Heading";
+import Modal from "../Modal";
 
 const ProfileContent = data => {
   const {user} = data.data;
@@ -26,8 +30,17 @@ const ProfileContent = data => {
   const [inputSkills, setInputSkills] = useState();
   const [skillModalVisible, setSkillModalVisible] = useState(false);
 
+  const [work_experience, setWork_experience] = useState([]);
+  const [workDetailsModalVisible, setworkDetailsModalVisible] = useState(false);
+  const [addWorkModal, setAddWorkModal] = useState(false);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [isChecked, setIsChecked] = useState(false);
+
   useEffect(() => {
     setSkills(user.skills);
+    setWork_experience(user.work_experience);
   }, []);
 
   const {isLoading, mutate: updateUserMutate} = useMutation(userData =>
@@ -74,13 +87,9 @@ const ProfileContent = data => {
 
   const showAddSkillModal = () => {
     return (
-      <Overlay
+      <Modal
         isVisible={skillModalVisible}
-        onBackdropPress={() => setSkillModalVisible(!skillModalVisible)}
-        overlayStyle={{
-          width: "90%",
-          padding: 20
-        }}>
+        setIsVisible={() => setSkillModalVisible(!skillModalVisible)}>
         <Input
           placeholder="Input Skill separeted by commas"
           onChangeText={value => setInputSkills(value)}
@@ -106,7 +115,131 @@ const ProfileContent = data => {
             handleAddSkillSubmit(inputSkillsArray);
           }}
         />
-      </Overlay>
+      </Modal>
+    );
+  };
+
+  const workDetailsModal = () => {
+    return (
+      <Modal
+        isVisible={workDetailsModalVisible}
+        setIsVisible={() =>
+          setworkDetailsModalVisible(!workDetailsModalVisible)
+        }>
+        {work_experience.map((d, i) => {
+          return (
+            <View
+              key={i}
+              style={{
+                padding: 10,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}>
+              <View>
+                <Text
+                  style={{fontSize: 16, fontWeight: "bold", color: "#000000"}}>
+                  {d.company_name}
+                </Text>
+                <Text style={{fontSize: 16}}>
+                  {d.start_date} - {d.end_date}
+                </Text>
+                <Text>{d.position}</Text>
+              </View>
+
+              <View>
+                <TouchableOpacity>
+                  <Icon
+                    name="delete"
+                    type="antdesign"
+                    size={28}
+                    style={{
+                      marginRight: 10
+                    }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Icon
+                    name="edit"
+                    type="antdesign"
+                    size={28}
+                    style={{
+                      marginRight: 10,
+                      marginTop: 10
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
+        })}
+      </Modal>
+    );
+  };
+
+  const addWorkExperienceModal = () => {
+    return (
+      <Modal
+        isVisible={addWorkModal}
+        setIsVisible={() => setAddWorkModal(!addWorkModal)}
+        mode="cover">
+        <ScrollView>
+          <Text style={styles.addWorkStyle}>Company name*</Text>
+          <Input
+            placeholder="Ex: Google"
+            onChangeText={value => setInputSkills(value)}
+          />
+
+          <Text style={styles.addWorkStyle}>Position*</Text>
+          <Input
+            placeholder="Ex - SDE intern"
+            onChangeText={value => setInputSkills(value)}
+          />
+
+          
+
+          <CheckBox
+            title="I am currently working in this role"
+            iconType="MaterialIcons"
+            checkedIcon="check-box"
+            uncheckedIcon="check-box-outline-blank"
+            checked={isChecked}
+            onPress={() => setIsChecked(!isChecked)}
+          />
+
+          <Text style={styles.addWorkStyle}>Start Date*</Text>
+          <DatePicker
+            maximumDate={new Date()}
+            date={startDate}
+            onDateChange={setStartDate}
+            mode="date"
+          />
+
+          {isChecked ? null : (
+            <>
+              <Text style={styles.addWorkStyle}>End Date*</Text>
+              <DatePicker
+                maximumDate={new Date()}
+                date={startDate}
+                onDateChange={setStartDate}
+                mode="date"
+              />
+            </>
+          )}
+
+          <Button
+            title="Add"
+            disabled={isLoading}
+            buttonStyle={styles.button}
+            titleStyle={{fontWeight: "bold"}}
+            onPress={() => {
+              // if (inputSkills === undefined) {
+              //   return showToast("Please add at least one skills.");
+              // }
+            }}
+          />
+        </ScrollView>
+      </Modal>
     );
   };
 
@@ -138,7 +271,7 @@ const ProfileContent = data => {
       <Divider orientation="horizontal" width={1.5} style={styles.divider} />
 
       {/* Work Experience section */}
-      {/* <View
+      <View
         style={{
           flexDirection: "row",
           marginTop: 10,
@@ -146,12 +279,7 @@ const ProfileContent = data => {
           alignItems: "center"
         }}>
         <Heading heading="Work Experience" />
-        <TouchableOpacity
-          onPress={() => {
-            skills.length >= 15
-              ? showToast("Cannot add more than 15 skills")
-              : setSkillModalVisible(!skillModalVisible);
-          }}>
+        <TouchableOpacity onPress={() => setAddWorkModal(!addWorkModal)}>
           <Icon
             name="pluscircleo"
             type="antdesign"
@@ -164,30 +292,37 @@ const ProfileContent = data => {
         </TouchableOpacity>
       </View>
 
-      {user.work_experience.map((d, i) => {
-        return (
-          <View style={{paddingHorizontal: 20}}>
-            <View
-              style={{
-                flex:1,
-                flexDirection: "row",
-                borderColor:"red", borderRadius:22 
-              }}>
-              <Text
-                style={{fontSize: 16, fontWeight: "bold", color: "#000000"}}>
-                {d.company_name}
-              </Text>
-              <Text style={{marginLeft: 10, fontSize: 16 }}>
-                {d.start_date} - {d.end_date}
-              </Text>
+      <TouchableOpacity
+        onPress={() => setworkDetailsModalVisible(!workDetailsModalVisible)}>
+        {work_experience.map((d, i) => {
+          return (
+            <View key={i} style={{paddingHorizontal: 20}}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  justifyContent: "space-between",
+                  alignItems: "center"
+                  // padding:20,
+                }}>
+                <Text
+                  style={{fontSize: 16, fontWeight: "bold", color: "#000000"}}>
+                  {d.company_name}
+                </Text>
+                <Text style={{marginLeft: 10, fontSize: 16}}>
+                  {d.start_date} - {d.end_date}
+                </Text>
+              </View>
+              <Text>{d.position}</Text>
             </View>
-            <Text>{d.position}</Text>
-          </View>
-        );
-      })}
+          );
+        })}
+      </TouchableOpacity>
+      {workDetailsModal()}
+      {addWorkExperienceModal()}
 
-      <Divider orientation="horizontal" width={1.5} style={styles.divider} /> 
-    */}
+      <Divider orientation="horizontal" width={1.5} style={styles.divider} />
 
       {/* Skill Section */}
       <View
@@ -269,6 +404,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20,
     marginBottom: 20
+  },
+  addWorkStyle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000000",
+    marginLeft: 12
   }
 });
 
