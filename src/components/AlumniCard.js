@@ -13,8 +13,8 @@ import LinkedIn from "react-native-vector-icons/AntDesign";
 import Icon from "react-native-vector-icons/Entypo";
 import {useQuery} from "react-query";
 import {getAlumni} from "../services/userService";
+import { checkUrl } from "../services/utilsService";
 import AppLoader from "./AppLoader";
-import Error from "./Error";
 
 const AlumniCard = ({company_name, company_id, style}) => {
   const {isLoading, isError, data, error} = useQuery(
@@ -24,21 +24,6 @@ const AlumniCard = ({company_name, company_id, style}) => {
 
   if (isLoading) return <AppLoader isLoading={isLoading} />;
 
-  // if (isError) return <Error />;
-
-  const checkUrl = async url => {
-    try {
-      const supported = await Linking.canOpenURL(url);
-
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(`Don't know how to open this URL: ${url}`);
-      }
-    } catch (err) {
-      console.log("Error - ", err);
-    }
-  };
 
   const displayCards = () => {
     return (

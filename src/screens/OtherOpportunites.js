@@ -51,13 +51,6 @@ const OtherOpportunites = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Loader
-        visible={isLoading}
-        textContent="Please wait"
-        textStyle={styles.loaderTextStyle}
-        color="#fff"
-        animation="fade"
-      />
 
       <FlatList
         ListHeaderComponent={header}
@@ -93,10 +86,7 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: "#ffffff",
   },
-  loaderTextStyle: {
-    color: "white",
-    marginBottom: 45,
-  },
+
 });
 
 export default OtherOpportunites;

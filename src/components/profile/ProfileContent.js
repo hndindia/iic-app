@@ -17,7 +17,6 @@ import {
 } from "react-native-elements";
 import {useMutation} from "react-query";
 import {deleteUser, updateUser} from "../../services/userService";
-import AppButton from "../AppButton";
 import Heading from "../Heading";
 
 const ProfileContent = data => {
@@ -94,7 +93,7 @@ const ProfileContent = data => {
           titleStyle={{fontWeight: "bold"}}
           onPress={() => {
             if (inputSkills === undefined) {
-              return showToast("Please add skills in the input box.");
+              return showToast("Please add at least one skills.");
             }
 
             let inputSkillsArray = inputSkills.replace(/\s/g, "").split(",");
@@ -137,6 +136,58 @@ const ProfileContent = data => {
       </View>
 
       <Divider orientation="horizontal" width={1.5} style={styles.divider} />
+
+      {/* Work Experience section */}
+      {/* <View
+        style={{
+          flexDirection: "row",
+          marginTop: 10,
+          justifyContent: "space-between",
+          alignItems: "center"
+        }}>
+        <Heading heading="Work Experience" />
+        <TouchableOpacity
+          onPress={() => {
+            skills.length >= 15
+              ? showToast("Cannot add more than 15 skills")
+              : setSkillModalVisible(!skillModalVisible);
+          }}>
+          <Icon
+            name="pluscircleo"
+            type="antdesign"
+            size={28}
+            style={{
+              marginRight: 10,
+              marginTop: 5
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {user.work_experience.map((d, i) => {
+        return (
+          <View style={{paddingHorizontal: 20}}>
+            <View
+              style={{
+                flex:1,
+                flexDirection: "row",
+                borderColor:"red", borderRadius:22 
+              }}>
+              <Text
+                style={{fontSize: 16, fontWeight: "bold", color: "#000000"}}>
+                {d.company_name}
+              </Text>
+              <Text style={{marginLeft: 10, fontSize: 16 }}>
+                {d.start_date} - {d.end_date}
+              </Text>
+            </View>
+            <Text>{d.position}</Text>
+          </View>
+        );
+      })}
+
+      <Divider orientation="horizontal" width={1.5} style={styles.divider} /> 
+    */}
 
       {/* Skill Section */}
       <View

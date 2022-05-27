@@ -1,23 +1,12 @@
 import React from "react";
 import {Alert, Linking, StyleSheet, Text, View} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
+import { checkUrl } from "../services/utilsService";
 
 const ForMore = ({route, navigation}) => {
   const {item} = route.params;
   // console.log("🔥🔥🔥🔥🔥🔥ROUTE -> ", route);
-  const checkUrl = async url => {
-    try {
-      const supported = await Linking.canOpenURL(url);
 
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(`Don't know how to open this URL: ${url}`);
-      }
-    } catch (err) {
-      console.log("Error - ", err);
-    }
-  };
 
   return (
     <View style={styles.container}>

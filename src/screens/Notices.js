@@ -20,6 +20,7 @@ import AppLoader from "../components/AppLoader";
 import Error from "../components/Error";
 import {useQuery} from "react-query";
 import AuthContext from "../context/AuthContext";
+import { checkUrl } from "../services/utilsService";
 
 const Notices = ({route}) => {
   const {userData} = route.params;
@@ -31,20 +32,6 @@ const Notices = ({route}) => {
   if (isLoading) return <AppLoader isLoading={isLoading} />;
 
   if (isError) return <Error />;
-
-  const checkUrl = async url => {
-    try {
-      const supported = await Linking.canOpenURL(url);
-
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        Alert.alert(`Don't know how to open this URL: ${url}`);
-      }
-    } catch (err) {
-      console.log("Error - ", err);
-    }
-  };
 
   return (
     <View style={styles.container}>
