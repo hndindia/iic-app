@@ -20,6 +20,7 @@ import {
 } from "react-native-elements";
 import {useMutation} from "react-query";
 import {deleteUser, updateUser} from "../../services/userService";
+import { showToast } from "../../services/utilsService";
 import Heading from "../Heading";
 import Modal from "../Modal";
 
@@ -50,14 +51,17 @@ const ProfileContent = data => {
     deleteUser(userData)
   );
 
-  const handleAddSkillSubmit = skills => {
+  const handleAddSubmit = data => {
     updateUserMutate(
-      {skills},
+      {data},
       {
         onSuccess: result => {
           // console.log("REsult ", result);
           setSkills(result.data.skills);
           setSkillModalVisible(!skillModalVisible);
+
+          setWork_experience(user.work_experience);
+          setAddWorkModal(false);
         },
         onError: error => {
           Alert.alert("Something went wrong please try again later.");
@@ -68,9 +72,9 @@ const ProfileContent = data => {
 
   // console.log("NEW SKILLS", skills);
 
-  const showToast = msg => {
-    ToastAndroid.show(msg, ToastAndroid.LONG);
-  };
+  // const showToast = msg => {
+  //   ToastAndroid.show(msg, ToastAndroid.LONG);
+  // };
 
   const handleSkillDelete = (skill, skillId) => {
     deleteUserMutate(`skill_index=${skillId}`, {
@@ -112,7 +116,7 @@ const ProfileContent = data => {
               return showToast("Cannot add more than 15 skills.");
             }
 
-            handleAddSkillSubmit(inputSkillsArray);
+            handleAddSubmit(inputSkillsArray);
           }}
         />
       </Modal>
@@ -196,8 +200,6 @@ const ProfileContent = data => {
             onChangeText={value => setInputSkills(value)}
           />
 
-          
-
           <CheckBox
             title="I am currently working in this role"
             iconType="MaterialIcons"
@@ -219,9 +221,9 @@ const ProfileContent = data => {
             <>
               <Text style={styles.addWorkStyle}>End Date*</Text>
               <DatePicker
-                maximumDate={new Date()}
-                date={startDate}
-                onDateChange={setStartDate}
+                maximumDate={startDate}
+                date={endDate}
+                onDateChange={setEndDate}
                 mode="date"
               />
             </>
@@ -271,7 +273,7 @@ const ProfileContent = data => {
       <Divider orientation="horizontal" width={1.5} style={styles.divider} />
 
       {/* Work Experience section */}
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           marginTop: 10,
@@ -320,9 +322,8 @@ const ProfileContent = data => {
         })}
       </TouchableOpacity>
       {workDetailsModal()}
-      {addWorkExperienceModal()}
+      {addWorkExperienceModal()} */}
 
-      <Divider orientation="horizontal" width={1.5} style={styles.divider} />
 
       {/* Skill Section */}
       <View

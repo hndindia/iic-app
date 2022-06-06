@@ -1,4 +1,4 @@
-import { Alert, Linking } from "react-native";
+import { Alert, ToastAndroid, Linking } from "react-native";
 
 export const checkUrl = async url => {
   try {
@@ -12,4 +12,8 @@ export const checkUrl = async url => {
   } catch (err) {
     console.log("Error - ", err);
   }
+};
+
+export const showToast = msg => {
+  ToastAndroid.show(msg, ToastAndroid.LONG);
 };

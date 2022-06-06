@@ -34,7 +34,7 @@ const AlumniCard = ({company_name, company_id, style}) => {
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => {
           return (
-            <View style={[styles.cardDontainer, style]}>
+            <View style={[styles.cardContainer, style]}>
               <Avatar
                 size="small"
                 overlayContainerStyle={{backgroundColor: "grey"}}
@@ -76,7 +76,7 @@ const AlumniCard = ({company_name, company_id, style}) => {
   };
 
   return (
-    <View style={{backgroundColor: "#FFFFFF"}}>
+    <View style={{backgroundColor: "#FFFFFF", padding:10}}>
       {data.data.length === 0 ? null : (
         <>
           <Text style={styles.companyName}>{company_name}</Text>
@@ -88,10 +88,10 @@ const AlumniCard = ({company_name, company_id, style}) => {
 };
 
 const styles = StyleSheet.create({
-  cardDontainer: {
+  cardContainer: {
     // margin: 20,
     marginVertical: 15,
-    marginHorizontal: 20,
+    marginHorizontal: 8,
     padding: 10,
     backgroundColor: "#ffffff",
     shadowColor: "#000",

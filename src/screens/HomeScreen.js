@@ -64,11 +64,13 @@ const HomeScreen = ({navigation}) => {
               Quizzes
             </Card.Title>
             <View style={{marginBottom: 6}}>
-              <Text>MCA</Text>
-              <Text>NP</Text>
-              <Text>PPC</Text>
-              <Text>CC</Text>
-              <Text>CNS</Text>
+              {userData.user.semester.subjects.map((sub, i) => {
+                return (
+                  <Text key={i} style={{color:"#73C8ED"}}>
+                    {sub.length > 15 ? sub.substring(0, 15) + "...." : sub}
+                  </Text>
+                );
+              })}
             </View>
           </TouchableOpacity>
         </Card>
@@ -82,10 +84,13 @@ const HomeScreen = ({navigation}) => {
         <Card containerStyle={styles.card}>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("HomeStack", {screen: "Profile"})
+              navigation.navigate("HomeStack", {
+                screen: "StudyMaterial",
+                params: {userData}
+              })
             }
             style={{alignItems: "center"}}>
-            <Card.Title style={{margin: 18, fontSize: 18}}>
+            <Card.Title style={{margin: 22, fontSize: 18}}>
               Study{"\n"}material
             </Card.Title>
 
@@ -98,7 +103,7 @@ const HomeScreen = ({navigation}) => {
         <Card containerStyle={styles.card}>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate("HomeStack", {screen: "OtherOpp"})
+              navigation.navigate("HomeStack", {screen: "Placements"})
             }
             style={{alignItems: "center"}}>
             <Card.Image
@@ -109,8 +114,8 @@ const HomeScreen = ({navigation}) => {
               }}
               source={require("../assets/images/other_opportunites_icon.png")}
             />
-            <Card.Title style={{marginTop: 20, fontSize: 18}}>
-              Other{"\n"}Opportunities
+            <Card.Title style={{marginTop: 22, fontSize: 18}}>
+              Placement{"\n"}Opportunities
             </Card.Title>
           </TouchableOpacity>
         </Card>
@@ -124,7 +129,7 @@ const HomeScreen = ({navigation}) => {
               }}
               source={require("../assets/images/notice.png")}
             />
-            <Card.Title style={{marginTop: 18, fontSize: 18}}>
+            <Card.Title style={{marginTop: 22, fontSize: 18}}>
               Events
             </Card.Title>
           </TouchableOpacity>
@@ -160,13 +165,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     marginTop: 0,
-    padding: 10,
+    // padding: 10,
     marginBottom: 30
   },
   cardLeft: {
-    marginBottom: 30
+    marginBottom: 30,
+    
   },
-  cardRight: {},
+  cardRight: {
+  },
 
   card: {
     shadowColor: "#000",

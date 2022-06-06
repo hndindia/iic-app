@@ -5,6 +5,8 @@ import ForMore from "../screens/ForMore";
 import Profile from "../screens/Profile";
 import Notices from "../screens/Notices";
 import OtherOpportunites from "../screens/OtherOpportunites";
+import Placements from "../screens/Placements";
+import StudyMaterial from "../screens/StudyMaterial";
 
 const StackNavigator = createNativeStackNavigator();
 
@@ -32,6 +34,18 @@ const HomeStackNavigation = () => (
     <StackNavigator.Screen
       component={OtherOpportunites}
       name="OtherOpp"
+      options={{headerShown: false}}
+    />
+    
+    <StackNavigator.Screen
+      component={Placements}
+      name="Placements"
+      options={{headerShown: false}}
+    />
+    
+    <StackNavigator.Screen
+      component={StudyMaterial}
+      name="StudyMaterial"
       options={{headerShown: false}}
     />
 

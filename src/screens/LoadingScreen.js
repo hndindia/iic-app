@@ -1,7 +1,10 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 
 import {ActivityIndicator, StyleSheet, View} from "react-native";
 import {getIsLoggedIn} from "../services/authService";
+import NetInfo from "@react-native-community/netinfo";
+import Error from "../components/Error";
+import {showToast} from "../services/utilsService";
 
 const LoadingScreen = ({navigation}) => {
   const detectUser = async () => {
@@ -10,7 +13,6 @@ const LoadingScreen = ({navigation}) => {
 
       if (data.success) navigation.replace("BottomTab");
       else navigation.replace("LogIn");
-      
     } catch (err) {
       console.log("Loading Screen ERROR - ", err);
 
@@ -19,7 +21,12 @@ const LoadingScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    detectUser();
+    NetInfo.fetch().then(state => {
+      console.log("Is connected?", state.isConnected);
+      state.isConnected
+        ? detectUser()
+        : showToast("Please connect to a stable internet connection");
+    });
   }, []);
 
   return (

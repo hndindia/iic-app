@@ -7,7 +7,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import HomeScreen from "../screens/HomeScreen";
 import Placements from "../screens/Placements";
 import Alumni from "../screens/Alumni";
-import Settings from "../screens/Settings";
 import Profile from "../screens/Profile";
 
 const Tab = createBottomTabNavigator();
@@ -22,8 +21,7 @@ const BottomTabNavigation = ({navigation}) => {
     //   iconName = focused ? "ios-podium" : "ios-podium-outline";
     else if (route.name === "Alumni")
       iconName = focused ? "ios-bookmarks" : "ios-bookmarks-outline";
-    // else if (route.name === "Settings")
-    //   iconName = focused ? "ios-settings" : "ios-settings-outline";
+
     else if (route.name === "Profile")
       iconName = focused
         ? "ios-person-circle-sharp"
@@ -48,36 +46,25 @@ const BottomTabNavigation = ({navigation}) => {
             source={require("../assets/images/ssipmt_logo.png")}
           />
         ),
-        headerRight: () => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("HomeStack", {screen: "Profile"})
-            }>
-            <Ionicons
-              name="md-notifications-circle"
-              size={30}
-              style={{
-                right: 16
-              }}
-            />
-            {/* <Image
-              style={{
-                width: 110,
-                height: 120,
-                marginTop: 10,
-                left: 15,
-                padding: 26,
-                flex: 1
-              }}
-              source={require("../assets/images/profile_icon.png")}
-            /> */}
-          </TouchableOpacity>
-        )
+        // headerRight: () => (
+        //   <TouchableOpacity
+        //     onPress={() =>
+        //       navigation.navigate("HomeStack", {screen: "Profile"})
+        //     }>
+        //     <Ionicons
+        //       name="md-notifications-circle"
+        //       size={30}
+        //       style={{
+        //         right: 16
+        //       }}
+        //     />
+
+        //   </TouchableOpacity>
+        // )
       })}>
       <Tab.Screen name="Home" component={HomeScreen} />
       {/* <Tab.Screen name="Placements" component={Placements} /> */}
       <Tab.Screen name="Alumni" component={Alumni} />
-      {/* <Tab.Screen name="Settings" component={Settings} /> */}
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
